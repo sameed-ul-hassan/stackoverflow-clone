@@ -39,10 +39,13 @@
                                     </a>
                                 </h3>
                                 <div class="ml-auto">
+                                    @if(Auth::user()->can('update-question',$que))
                                     <a href="{{ route('questions.edit',$que->id) }}"
                                         class="btn btn-sm btn-outline-info">
                                         edit
                                     </a>
+                                    @endif
+                                    @if(Auth::user()->can('delete-question',$que))
                                     <form class="d-inline" action="{{ route('questions.destroy',$que->id) }}"
                                         method="post">
                                         @csrf
@@ -50,6 +53,7 @@
                                         <button type="submit" class="btn btn-sm btn-outline-danger"
                                             onclick="return confirm('Are you sure ?')">Delete</button>
                                     </form>
+                                    @endif
                                 </div>
                             </div>
                             <p class="lead">
