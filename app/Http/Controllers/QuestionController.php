@@ -86,14 +86,20 @@ class QuestionController extends Controller
      */
     public function update(AskQuestionRequest $request, Question $question)
     {
-        if (\Gate::allows('update-question', $question)) {
-            try {
-                $question->update($request->all());
-                return redirect()->route('questions.index')->with('success', 'Your question has been updated');
-            } catch (Exception $e) {
-            }
+        // if (\Gate::allows('update-question', $question)) {
+        //     try {
+        //         $question->update($request->all());
+        //         return redirect()->route('questions.index')->with('success', 'Your question has been updated');
+        //     } catch (Exception $e) {
+        //     }
+        // }
+        // abort(403, 'Access denied');
+        try {
+            $this->authorize('update', $question);
+            $question->update($request->all());
+            return redirect()->route('questions.index')->with('success', 'Your question has been updated');
+        } catch (Exception $e) {
         }
-        abort(403, 'Access denied');
     }
 
     /**
@@ -104,13 +110,19 @@ class QuestionController extends Controller
      */
     public function destroy(Question $question)
     {
-        if (\Gate::allows('delete-question', $question)) {
-            try {
-                $question->delete();
-                return redirect()->route('questions.index')->with('success', 'Your question has been deleted');
-            } catch (Exception $e) {
-            }
+        // if (\Gate::allows('delete-question', $question)) {
+        //     try {
+        //         $question->delete();
+        //         return redirect()->route('questions.index')->with('success', 'Your question has been deleted');
+        //     } catch (Exception $e) {
+        //     }
+        // }
+        // abort(403, 'Access denied');
+        $this->authorize('delete', $question);
+        try {
+            $question->delete();
+            return redirect()->route('questions.index')->with('success', 'Your question has been deleted');
+        } catch (Exception $e) {
         }
-        abort(403, 'Access denied');
     }
 }
