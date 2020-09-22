@@ -18,7 +18,7 @@ class CreateAnswersTable extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('question_id')->constrained()->onDelete('cascade');
             $table->longText('body');
-            $table->integer('votes_count');
+            $table->integer('votes_count')->default(0);
             $table->timestamps();
         });
     }
