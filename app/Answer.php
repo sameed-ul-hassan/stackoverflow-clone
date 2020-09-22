@@ -38,12 +38,18 @@ class Answer extends Model
         });
 
         static::deleted(function ($answer) {
-            $question = $answer->question;
-            $question->decrement('answers_count');
-            if ($question->best_answer_id === $answer->id) {
-                $question->best_answer_id = NULL;
-                $question->save();
-            }
+            $answer->question->decrement('answers_count');
+
+            /**
+             * To set best_answer_id using eloquent event
+             **/
+
+            // $question = $answer->question;
+            // $question->decrement('answers_count');
+            // if ($question->best_answer_id === $answer->id) {
+            //     $question->best_answer_id = NULL;
+            //     $question->save();
+            // }
         });
     }
 
