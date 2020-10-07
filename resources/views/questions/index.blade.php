@@ -60,7 +60,9 @@
                                 Asked by <a href="{{$que->user->url }}">{{ $que->user->name }}</a>
                                 <small class="text-muted">{{ $que->created_date }}</small>
                             </p>
-                            {{ \Illuminate\Support\Str::limit($que->body,250) }}
+                            <div class="excerpt">
+                                {{ $que->excerpt }}
+                            </div>
                         </div>
                     </div>
                     <hr>
