@@ -10,44 +10,7 @@
                 @include('layouts._messages')
                 @foreach ($answers as $answer)
                 <div class="media">
-                    <div class="d-flex flex-column vote-controls">
-                        <a class="vote-up {{ Auth::guest() ? 'off' : '' }}" title="This answer is useful"
-                            onclick="event.preventDefault();document.getElementById('up-vote-answer-{{ $answer->id }}').submit();">
-                            <i class="fas fa-caret-up fa-2x"></i>
-                        </a>
-                        <form action="/answers/{{ $answer->id }}/vote" id="up-vote-answer-{{ $answer->id }}"
-                            method="POST" class="d-none">
-                            @csrf
-                            <input type="hidden" name="vote" value="1">
-                        </form>
-                        <span class="vote-count">{{ $answer->votes_count }}</span>
-                        <a class="vote-down {{ Auth::guest() ? 'off' : '' }}" title="This answer is not useful"
-                            onclick="event.preventDefault();document.getElementById('down-vote-answer-{{ $answer->id }}').submit();">
-                            <i class="fas fa-caret-down fa-2x"></i>
-                        </a>
-                        <form action="/answers/{{ $answer->id }}/vote" id="down-vote-answer-{{ $answer->id }}"
-                            method="POST" class="d-none">
-                            @csrf
-                            <input type="hidden" name="vote" value="-1">
-                        </form>
-                        @can('accept', $answer)
-                        <a title="Mark this answer as best answer" class="{{ $answer->status }} mt-2"
-                            onclick="event.preventDefault();document.getElementById('accept-answer-{{ $answer->id }}').submit();">
-                            <i class="fas fa-check fa-2x"></i>
-                        </a>
-                        <form action="{{ route('answers.accept',$answer->id) }}" id="accept-answer-{{ $answer->id }}"
-                            method="POST" class="d-none">
-                            @csrf
-                        </form>
-                        @else
-                        @if ($answer->is_best)
-                        <a title="The question owner accepted this answer as best answer"
-                            class="{{ $answer->status }} mt-2">
-                            <i class="fas fa-check fa-2x"></i>
-                        </a>
-                        @endif
-                        @endcan
-                    </div>
+                    @include('shared._vote',['model' => $answer])
                     <div class="media-body">
                         <p>{!! $answer->body !!}</p>
                         <div class="row">
@@ -73,17 +36,7 @@
                             </div>
                             <div class="col-4"></div>
                             <div class="col-4">
-                                <span class="text-muted">
-                                    Answerd {{ $answer->created_date }}
-                                </span>
-                                <div class="media mt-2 d-flex align-items-center">
-                                    <a href="{{ $answer->user->url }}" class="pr-2">
-                                        <img src="{{ $answer->user->avatar }}" alt="">
-                                    </a>
-                                    <div class="media-body">
-                                        <a href="{{ $answer->user->url }}">{{ $answer->user->name }}</a>
-                                    </div>
-                                </div>
+                                @include('shared._author',['model' => $answer,'label' => 'answered'])
                             </div>
                         </div>
                     </div>
